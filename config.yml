@@ -1,0 +1,8 @@
+include:
+  admin: github.com/backlift/backlift-admin
+
+themes:
+  default: 
+    admin:
+      - gist.github.com/laurihy/563ca0d263f56ee199b7
+    scripts: gist.github.com/laurihy/563ca0d263f56ee199b7
