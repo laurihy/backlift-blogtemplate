@@ -2,7 +2,7 @@ include:
   admin: github.com/backlift/backlift-admin
 
 themes:
-  default: 
-    admin:
-      - gist.github.com/laurihy/563ca0d263f56ee199b7
+  cerulean: 
     cerulean: raw.github.com/thomaspark/bootswatch/gh-pages/cerulean/bootstrap.css
+  spruce:
+    spruce: raw.github.com/thomaspark/bootswatch/gh-pages/spruce/bootstrap.css 
