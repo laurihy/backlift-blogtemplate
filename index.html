@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>MyBlog</title>
+
+        {{$ styles }}
+
+    </head>
+    <body>
+        <h1>My Blog</h1>
+
+        <script>
+            var App = App || {}
+            App.posts = {{$ get /backlift/data/posts }}
+        </script>
+
+        {{$ scripts }}
+
+    </body>
+</html>

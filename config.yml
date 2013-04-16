@@ -1,8 +1,17 @@
+autoroute: yes
+
 include:
-  admin: github.com/backlift/backlift-admin
+  admin: 
+  - github.com/backlift/backlift-admin
+  libraries: 
+  - github.com/backlift/backbone-bundle/tree/20130406
+  - github.com/backlift/bootstrap-bundle/tree/20130406
+  libraries/scripts: 
+  - gist.github.com/backlift/5325013 # backlift-reloader.js
+  - gist.github.com/backlift/5334085 # backlift-commonview.js 
 
 themes:
   cerulean: 
-    cerulean: raw.github.com/thomaspark/bootswatch/gh-pages/cerulean/bootstrap.css
+    theme-cerulean: raw.github.com/thomaspark/bootswatch/gh-pages/cerulean/bootstrap.css
   spruce:
-    spruce: raw.github.com/thomaspark/bootswatch/gh-pages/spruce/bootstrap.css 
+    theme-spruce: raw.github.com/thomaspark/bootswatch/gh-pages/spruce/bootstrap.css 
