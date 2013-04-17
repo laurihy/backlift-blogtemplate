@@ -1,8 +1,17 @@
+styles:
+- /libraries/styles/bootstrap.css
+- /theme-*/**/*.css
+
+scripts:
+- /libraries/scripts/underscore.js
+- /libraries/scripts/jquery.js
+- /libraries/scripts/backbone.js
+- /libraries/**/*.js
+- /scripts/**/*.js
+
 autoroute: yes
 
 include:
-  admin: 
-  - github.com/backlift/backlift-admin
   libraries: 
   - github.com/backlift/backbone-bundle/tree/20130406
   - github.com/backlift/bootstrap-bundle/tree/20130406
@@ -11,7 +20,17 @@ include:
   - gist.github.com/backlift/5334085 # backlift-commonview.js 
 
 themes:
+  amelia:
+    themes-amelia: raw.github.com/thomaspark/bootswatch/gh-pages/amelia/bootstrap.css
   cerulean: 
     theme-cerulean: raw.github.com/thomaspark/bootswatch/gh-pages/cerulean/bootstrap.css
+  readable:
+    theme-readable: raw.github.com/thomaspark/bootswatch/gh-pages/readable/bootstrap.css
   spruce:
     theme-spruce: raw.github.com/thomaspark/bootswatch/gh-pages/spruce/bootstrap.css 
+  superhero:
+    theme-superhero: raw.github.com/thomaspark/bootswatch/gh-pages/superhero/bootstrap.css
+  simplex:
+    theme-simplex: raw.github.com/thomaspark/bootswatch/gh-pages/simplex/bootstrap.css
+
+     

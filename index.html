@@ -3,18 +3,108 @@
     <head>
         <title>MyBlog</title>
 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
         {{$ styles }}
 
     </head>
     <body>
-        <h1>My Blog</h1>
+        <div class="hero-unit text-center">
+            <h1>My Blog</h1>
+            <h3>Some tagline here</h3>
+        </div>
+
+        <div class="container">
+            <!-- render content dynamically -->
+            <div class="row" id="main"></div>
+        </div>
+
+        <div class="text-center" id="footer" style="padding: 50px 0;">
+            <p>Copyright</p>
+        </div>
+
+        <script type="text/template" id="mainview">
+            <div class="span8 offset2">
+
+            <% for(var i=0; i<postcount; i++){ %>
+
+                <h1><%= posts[i].title %></h1>
+                <p class="muted"><%= jQuery.timeago(posts[i]._created) %></p>
+                <p><%= App.getFirstParagraph(posts[i]) %>
+                <a href="/<%= App.generateSlug(posts[i].title) %>">Read more</a></p>
+                <hr />
+
+            <% } %>
+
+            <% if(posts.length==0){ %>
+                <h3 class="text-center">No posts (yet?)</h3>
+            <% } %>
+
+            <% if(postcount<posts.length) { %>
+                <div class="text-center">
+                    <a href="all" class="btn btn-primary">View All (<%= posts.length %>)</a>
+                </div>
+            <% } %>
+
+            </div>
+
+        </script>
+
+
+        <script type="text/template" id="post">
+        <!-- this is a template for individual post -->
+            <div class="span8 offset2">
+                <div class="page-header">
+                    <h1><%= post.title %></h1> 
+                    <p>Posted <%= jQuery.timeago( post['_created'] ) %></p>
+                </div>
+                <%= marked(post.content) %>
+
+                <hr>
+                <!-- TODO: implement comment system -->
+            </div>
+        </script>
+
+        <script type="text/template" id="error">
+        <!-- this is a template for individual post -->
+            <div class="span8 offset2">
+                <h3 class="text-center"><%= error %></h3>
+            </div>
+        </script>
+
+        <script type="text/template" id="all">
+        <!-- this template is used to list all posts -->
+            <div class="span8 offset2">
+
+            <h3>All posts:</h3>
+
+                <table class="table">
+                    <% for(var i=0;i<posts.length;i++) { %>
+                        <tr>
+                            <td class="muted"><%= i %></td>
+                            <td><a href="<%= App.generateSlug(posts[i].title) %>"><%= posts[i]['title'] %></a></td>
+                            <td><span class="pull-right"><%= App.prettyDate(posts[i]['_created']) %></span></td>
+                        </tr>
+                    <% } %>
+                </table>
+            </div>
+
+        </script>
 
         <script>
             var App = App || {}
             App.posts = {{$ get /backlift/data/posts }}
+
+            // sort posts (latest first)
+            App.posts.sort(function(a,b){
+                return (new Date(a._created)) < (new Date(b._created) )
+            });
+
         </script>
 
         {{$ scripts }}
+
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.1.0/jquery.timeago.min.js"></script>
 
     </body>
 </html>
