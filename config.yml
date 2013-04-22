@@ -1,7 +1,7 @@
 styles:
 - /libraries/styles/bootstrap.css
-- /libraries/styles/bootstrap-responsive.css
 - /theme-*/**/*.css
+- /libraries/styles/bootstrap-responsive.css
 
 scripts:
 - /libraries/scripts/underscore.js
@@ -40,6 +40,8 @@ packages:
     theme-superhero: raw.github.com/thomaspark/bootswatch/gh-pages/superhero/bootstrap.css
   simplex:
     theme-simplex: raw.github.com/thomaspark/bootswatch/gh-pages/simplex/bootstrap.css
+  slate:
+    theme-slate: raw.github.com/thomaspark/bootswatch/gh-pages/slate/bootstrap.css
 
 require:
 - include  
