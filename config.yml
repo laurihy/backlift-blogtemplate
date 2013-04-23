@@ -8,6 +8,7 @@ scripts:
 - /libraries/scripts/jquery.js
 - /libraries/scripts/backbone.js
 - /libraries/**/*.js
+- /templates/**/*.js
 - /scripts/**/*.js
 
 autoroute: yes
