@@ -13,17 +13,17 @@
         }
 
         @media (max-width: 979px){
-            body {
-              padding-left: 0 !important;
-              padding-right: 0 !important;
-            }
-            
-            .container {
-              padding-left: 2.5% !important;
-              padding-right: 2.5% !important;
-            }
+        body {
+          padding-left: 0 !important;
+          padding-right: 0 !important;
         }
-        </style>
+        
+        .container {
+          padding-left: 2.5% !important;
+          padding-right: 2.5% !important;
+        }
+      }
+      </style>
 
     </head>
     <body>
@@ -34,7 +34,10 @@
 
         <div class="container">
             <!-- render content dynamically -->
-            <div class="row" id="main"></div>
+            <div class="row">
+                <div class="span8" id="main"></div>
+                <div class="span4" id="sidebar"></div>
+            </div>
         </div>
 
         <div class="container">
@@ -44,7 +47,6 @@
         </div>
 
         <script type="text/template" id="mainview">
-            <div class="span8 offset2">
 
             <% for(var i=0; i<postcount; i++){ %>
 
@@ -57,7 +59,7 @@
             <% } %>
 
             <% if(posts.length==0){ %>
-                <h3 class="text-center">No posts (yet?)</h3>
+                <p>No posts (yet?)</p>
             <% } %>
 
             <% if(postcount<posts.length) { %>
@@ -66,49 +68,63 @@
                 </div>
             <% } %>
 
-            </div>
-
         </script>
 
 
         <script type="text/template" id="post">
         <!-- this is a template for individual post -->
-            <div class="span8 offset2">
+            
                 <div class="page-header">
                     <h1><%= post.title %></h1> 
                     <p>Posted <%= jQuery.timeago( post['_created'] ) %></p>
                 </div>
                 <%= marked(post.content) %>
-
-                <hr>
-                <!-- TODO: implement comment system -->
+                
+                <ul class="pager">
+                    <% if(prev){ %>
+                        <li class="previous">
+                            <a href="/<%= App.generateSlug(prev.title) %>">&larr; Previous</a>
+                        </li>
+                    <% } %>
+                    <% if(next){ %>
+                        <li class="next">
+                            <a href="/<%= App.generateSlug(next.title) %>">&rarr; next</a>
+                        </li>
+                    <% } %>
+                </ul>
             </div>
         </script>
 
         <script type="text/template" id="error">
-        <!-- this is a template for individual post -->
-            <div class="span8 offset2">
-                <h3 class="text-center"><%= error %></h3>
-            </div>
+            <h3 class="text-center"><%= error %></h3>
         </script>
 
         <script type="text/template" id="all">
         <!-- this template is used to list all posts -->
-            <div class="span8 offset2">
 
             <h3>All posts:</h3>
 
-                <table class="table">
-                    <% for(var i=0;i<posts.length;i++) { %>
-                        <tr>
-                            <td class="muted"><%= i %></td>
-                            <td><a href="<%= App.generateSlug(posts[i].title) %>"><%= posts[i]['title'] %></a></td>
-                            <td><span class="pull-right"><%= App.prettyDate(posts[i]['_created']) %></span></td>
-                        </tr>
-                    <% } %>
-                </table>
-            </div>
+            <table class="table">
+                <% for(var i=0;i<posts.length;i++) { %>
+                    <tr>
+                        <td class="muted"><%= i %></td>
+                        <td><a href="<%= App.generateSlug(posts[i].title) %>"><%= posts[i]['title'] %></a></td>
+                        <td><span class="pull-right"><%= App.prettyDate(posts[i]['_created']) %></span></td>
+                    </tr>
+                <% } %>
+            </table>
 
+        </script>
+
+        <script type="text/template" id="sidebar-template">
+            <ul class="nav nav-list well">
+                <li class="nav-header">Latest posts</li>
+                <% for(var i=0; i<postcount; i++){ %>
+                    <li class="<%= posts[i]==post ? 'active' : '' %>">
+                        <a href="<%= App.generateSlug(posts[i].title) %>"><%= posts[i]['title'] %></a>
+                    </li>
+                <% } %>
+            </ul>
         </script>
 
         <script>
