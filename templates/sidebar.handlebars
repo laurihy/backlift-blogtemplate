@@ -1,0 +1,10 @@
+<ul class="nav nav-list well">
+    <li class="nav-header">Latest posts</li>
+    {{#posts}}
+        {{#if isCurrent}}
+            <li class="active"><a href="{{slug}}">{{title}}</a></li>
+        {{else}}
+            <li><a href="{{slug}}">{{title}}</a></li>
+        {{/if}}
+    {{/posts}}
+</ul>

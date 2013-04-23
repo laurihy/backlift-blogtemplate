@@ -46,95 +46,9 @@
             </div>
         </div>
 
-        <script type="text/template" id="mainview">
-
-            <% for(var i=0; i<postcount; i++){ %>
-
-                <h1><%= posts[i].title %></h1>
-                <p class="muted"><%= jQuery.timeago(posts[i]._created) %></p>
-                <p><%= App.getFirstParagraph(posts[i]) %>
-                <a href="/<%= App.generateSlug(posts[i].title) %>">Read more</a></p>
-                <hr />
-
-            <% } %>
-
-            <% if(posts.length==0){ %>
-                <p>No posts (yet?)</p>
-            <% } %>
-
-            <% if(postcount<posts.length) { %>
-                <div class="text-center">
-                    <a href="all" class="btn btn-primary">View All (<%= posts.length %>)</a>
-                </div>
-            <% } %>
-
-        </script>
-
-
-        <script type="text/template" id="post">
-        <!-- this is a template for individual post -->
-            
-                <div class="page-header">
-                    <h1><%= post.title %></h1> 
-                    <p>Posted <%= jQuery.timeago( post['_created'] ) %></p>
-                </div>
-                <%= marked(post.content) %>
-                
-                <ul class="pager">
-                    <% if(prev){ %>
-                        <li class="previous">
-                            <a href="/<%= App.generateSlug(prev.title) %>">&larr; Previous</a>
-                        </li>
-                    <% } %>
-                    <% if(next){ %>
-                        <li class="next">
-                            <a href="/<%= App.generateSlug(next.title) %>">&rarr; next</a>
-                        </li>
-                    <% } %>
-                </ul>
-            </div>
-        </script>
-
-        <script type="text/template" id="error">
-            <h3 class="text-center"><%= error %></h3>
-        </script>
-
-        <script type="text/template" id="all">
-        <!-- this template is used to list all posts -->
-
-            <h3>All posts:</h3>
-
-            <table class="table">
-                <% for(var i=0;i<posts.length;i++) { %>
-                    <tr>
-                        <td class="muted"><%= i %></td>
-                        <td><a href="<%= App.generateSlug(posts[i].title) %>"><%= posts[i]['title'] %></a></td>
-                        <td><span class="pull-right"><%= App.prettyDate(posts[i]['_created']) %></span></td>
-                    </tr>
-                <% } %>
-            </table>
-
-        </script>
-
-        <script type="text/template" id="sidebar-template">
-            <ul class="nav nav-list well">
-                <li class="nav-header">Latest posts</li>
-                <% for(var i=0; i<postcount; i++){ %>
-                    <li class="<%= posts[i]==post ? 'active' : '' %>">
-                        <a href="<%= App.generateSlug(posts[i].title) %>"><%= posts[i]['title'] %></a>
-                    </li>
-                <% } %>
-            </ul>
-        </script>
-
         <script>
             var App = App || {}
             App.posts = {{$ get /backlift/data/posts }}
-
-            // sort posts (latest first)
-            App.posts.sort(function(a,b){
-                return (new Date(a._created)) < (new Date(b._created) )
-            });
 
         </script>
 

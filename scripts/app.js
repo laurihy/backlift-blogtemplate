@@ -8,21 +8,16 @@ App.generateSlug = function(title){
 }
 
 App.getFirstParagraph = function(post){
-    return $('<div>'+marked(post.content)+'</div>').find('p:first').text();
+    return $('<div>'+post['html']+'</div>').find('p:first').text();
 }
 
 App.prettyDate = function(datestr){
     return new Date(datestr).toString('MMMM d, yyyy')
 }
 
-App.renderTemplate = function(templatename, target, data){
-    var template = _.template($(templatename).html(), data);
-    $(target).html(template);
-}
-
 App.findPostBySlug = function(slug){
     var post = _.find(App.posts, function(post){
-        return slug==App.generateSlug(post.title); 
+        return slug==post.slug; 
     });
     return post;
 }
@@ -39,6 +34,21 @@ App.findOffsetPost = function(post, offset){
     return App.posts[newindex]
 }
 
+App.getPosts = function(start, count){
+    return App.posts.slice(start, start+count)
+}
+
+App.loadMorePosts = function(){
+    posts = App.getPosts(App.loadedPostsOffset, 1);
+    html = Handlebars.templates.postlist({posts: posts});
+    $('#postlist').append(html)
+    App.loadedPostsOffset += 1;
+    if(App.loadedPostsOffset>=App.posts.length){
+        $('#loadmore').attr('disabled','disabled');
+        $('#loadmore').text('No more posts');
+    }
+}
+
 App.router = Backbone.Router.extend({
     routes: {
         "": "mainview",
@@ -46,36 +56,47 @@ App.router = Backbone.Router.extend({
     },
 
     mainview: function(){
-        var postcount = Math.min(App.posts.length, 5);
-        var data = {
-            post: undefined,
-            posts: App.posts,
-            postcount: postcount
-        }
-        App.renderTemplate('#mainview', '#main', data);
-        App.renderTemplate('#sidebar-template', '#sidebar', data);
+        $('#main').html(Handlebars.templates.mainview());
+        App.loadedPostsOffset = 0;
+        App.loadMorePosts();
 
+        $('#sidebar').html(Handlebars.templates.sidebar({posts: App.getPosts(0, 5)}));
     },
 
     post: function(slug){
         var post = App.findPostBySlug(slug)
-        var prev = App.findOffsetPost(post, +1);
-        var next = App.findOffsetPost(post, -1);
 
         if(post!=undefined){
-            App.renderTemplate('#post','#main',{post:post, prev:prev, next:next});
+            post['html'] = post['html'] || marked(post['content']);
+            $('#main').html(Handlebars.templates.singlepost( post ))
         } else {
-            App.renderTemplate('#error','#main',{error: 'Post was not found'});
+            $('#main').html(Handlebars.templates.error({ error: 'Post was not found' }));
         }
 
-        App.renderTemplate('#sidebar-template','#sidebar',{
-                post: post,
-                posts: App.posts,
-                postcount: Math.min(App.posts.length, 5)
-        });
+        $('#sidebar').html(Handlebars.templates.sidebar({ posts: App.getPosts(0, 5) }));
     }
 
 })
+
+
+// sort posts (latest first)
+App.posts.sort(function(a,b){
+    return (new Date(a._created)) < (new Date(b._created) )
+});
+
+// preprocess posts a little bit
+App.posts = _.map(App.posts, function(post){
+    post['html'] = marked(post['content']);
+    post['excerpt'] = App.getFirstParagraph(post);
+    post['slug'] = App.generateSlug(post['title']);
+    post['timeago'] = post['timeago'] || jQuery.timeago(post['_created']);
+    post['prev'] = App.findOffsetPost(post, +1);
+    post['next'] = App.findOffsetPost(post, -1)
+    post['isCurrent'] = function(){
+        return post['slug'] == Backbone.history.fragment;
+    }
+    return post
+});
 
 // init the app
 new App.router();

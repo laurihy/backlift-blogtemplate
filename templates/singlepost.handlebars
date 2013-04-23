@@ -1,0 +1,22 @@
+<div class="page-header">
+    <h1>{{title}}</h1> 
+    <p>Posted {{timeago}}</p>
+</div>
+
+{{{html}}}
+
+<ul class="pager">
+
+    {{#if prev}}
+        <li class="previous">
+            <a href="/{{prev.slug}}">&larr; Previous</a>
+        </li>
+    {{/if}}
+
+    {{#if next}}
+        <li class="next">
+            <a href="/{{next.slug}}">next &rarr;</a>
+        </li>
+    {{/if}}
+
+</ul>
